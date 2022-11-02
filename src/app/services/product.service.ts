@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.interface';
-import { delay, shareReplay, tap } from "rxjs/operators";
+import { delay, shareReplay, tap, map } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,14 @@ export class ProductService {
     private http: HttpClient
   ) {
     this.initProducts();
+  }
+
+  getProductById(id: number): Observable<Product> {
+    return this
+              .products$
+              .pipe(
+                map(products => products.find(product => product.id == id))
+              )
   }
 
   initProducts() {
