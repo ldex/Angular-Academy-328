@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.interface';
-import { delay, tap } from "rxjs/operators";
+import { delay, shareReplay, tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,8 @@ export class ProductService {
                       .get<Product[]>(this.baseUrl)
                       .pipe(
                         delay(1500), // For demo only...
-                        tap(console.table)
+                        tap(console.table),
+                        shareReplay()
                       );
   }
 }
