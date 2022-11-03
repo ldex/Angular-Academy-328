@@ -14,6 +14,10 @@
     <h2 class="loading">Loading</h2>
   </ng-template>
 
+  <div class="right">
+    {{ productsNumber$ | async }} products
+  </div>
+
   Sort by:
   <button (click)="sortList('price')">Price</button>
   <button (click)="sortList('name')">Name</button>
@@ -35,11 +39,13 @@
   </div>
 
   <div>
-    <button (click)="previousPage()" [disabled]="start == 0">
+    <button (click)="previousPage()"
+            [disabled]="start == 0">
       < Previous Page
     </button>
     Page {{ pageNumber }}
-    <button (click)="nextPage()">
+    <button (click)="nextPage()"
+            [disabled]="(productsNumber$ | async) <= end">
       Next Page >
     </button>
   </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EMPTY, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, startWith } from 'rxjs/operators';
 import { Product } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -14,7 +14,10 @@ export class ProductListComponent implements OnInit {
 
   title: string = 'Products';
   //products: Product[];
+
   products$: Observable<Product[]>;
+  productsNumber$: Observable<number>;
+
   selectedProduct: Product;
   errorMessage: string;
   sorter:string = '-price';
@@ -68,6 +71,13 @@ export class ProductListComponent implements OnInit {
                             }
                           )
                         );
+
+    this.productsNumber$ = this
+                            .products$
+                            .pipe(
+                              map(products => products.length),
+                              startWith(0)
+                            )
 
     // this
     //   .productService
