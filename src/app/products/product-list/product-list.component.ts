@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Product } from 'src/app/models/product.interface';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -15,6 +16,7 @@ export class ProductListComponent implements OnInit {
   //products: Product[];
   products$: Observable<Product[]>;
   selectedProduct: Product;
+  errorMessage: string;
 
   // Pagination
   pageSize = 5;
@@ -50,7 +52,17 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.products$ = this.productService.products$;
+    this.products$ = this
+                        .productService
+                        .products$
+                        .pipe(
+                          catchError(
+                            error => {
+                              this.errorMessage = error;
+                              return EMPTY;
+                            }
+                          )
+                        );
 
     // this
     //   .productService
