@@ -18,6 +18,10 @@ export class ProductService {
     this.initProducts();
   }
 
+  insertProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.baseUrl, product);
+  }
+
   getProductById(id: number): Observable<Product> {
     return this
               .products$
@@ -27,9 +31,11 @@ export class ProductService {
   }
 
   initProducts() {
+    let url:string = this.baseUrl + '?$orderby=ModifiedDate%20desc';
+
     this.products$ = this
                       .http
-                      .get<Product[]>(this.baseUrl)
+                      .get<Product[]>(url)
                       .pipe(
                         delay(1500), // For demo only...
                         tap(console.table),
