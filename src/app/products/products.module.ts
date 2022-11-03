@@ -6,6 +6,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductListComponent } from './product-list/product-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductInsertComponent } from './product-insert/product-insert.component';
+import { OrderBy } from './orderBy.pipe';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { ProductInsertComponent } from './product-insert/product-insert.componen
   declarations: [
     ProductDetailComponent,
     ProductListComponent,
-    ProductInsertComponent
+    ProductInsertComponent,
+    OrderBy
   ]
 })
 export class ProductsModule { }

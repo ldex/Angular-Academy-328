@@ -17,6 +17,11 @@ export class ProductListComponent implements OnInit {
   products$: Observable<Product[]>;
   selectedProduct: Product;
   errorMessage: string;
+  sorter:string = '-price';
+
+  sortList(propertyName: string) {
+    this.sorter = this.sorter.startsWith("-") ? propertyName : "-" + propertyName;
+  }
 
   // Pagination
   pageSize = 5;
