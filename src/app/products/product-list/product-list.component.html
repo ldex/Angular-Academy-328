@@ -35,6 +35,13 @@
   </ul>
 
   <div class="right">
+    <span *ngIf="mostExpensiveProduct$ | async as mostExpensiveProduct">
+      Most expensive:
+      {{ mostExpensiveProduct?.name }}
+      {{ mostExpensiveProduct?.price | currency }}
+    </span>
+
+
     <a routerLink="insert">Add new product...</a>
   </div>
 

@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Product } from '../models/product.interface';
-import { delay, shareReplay, tap, map, catchError } from "rxjs/operators";
+import { delay, shareReplay, tap, map, catchError, first, mergeAll } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,26 @@ export class ProductService {
 
   private baseUrl = 'https://storerestservice.azurewebsites.net/api/products/';
   products$: Observable<Product[]>;
+  mostExpensiveProduct$: Observable<Product>;
 
   constructor(
     private http: HttpClient
   ) {
     this.initProducts();
+    this.initMostExpensiveProduct();
+  }
+
+  private initMostExpensiveProduct() {
+    this.mostExpensiveProduct$ =
+      this
+      .products$
+      .pipe(
+        map(products => [...products].sort((p1, p2) => p1.price > p2.price ? -1 : 1)),
+        // [{}, {}, {}]
+        mergeAll(),
+        // {}, {}, {}
+        first()
+      )
   }
 
   deleteProduct(id: number): Observable<any> {
@@ -65,3 +80,4 @@ export class ProductService {
     return throwError('Could not load the products; network error.');
   }
 }
+
